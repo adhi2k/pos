@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS System - Billing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>🛒 Fresh POS</h1>
+        <ul>
+            <li><a href="index.html" class="active">Billing</a></li>
+            <li><a href="products.html">Inventory</a></li>
+            <li><a href="report.html">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="pos-layout">
+            <div class="products-section">
+                <input type="text" id="search-product" class="search-bar" placeholder="Search items...">
+                <div class="product-grid" id="product-grid"></div>
+            </div>
+
+            <div class="cart-section">
+                <h2>Current Order</h2>
+                <div class="cart-items" id="cart-items"></div>
+                <div class="cart-summary">
+                    <div class="total-row"><span>Total:</span><span id="cart-total">₹0.00</span></div>
+                    <button class="btn btn-success" id="checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-content">
+            <h2>Complete Sale</h2>
+            <div class="summary-row"><span>Subtotal:</span> <span id="modal-subtotal">₹0.00</span></div>
+            
+            <div class="form-group">
+                <label>Discount (₹)</label>
+                <input type="number" id="modal-discount" value="0" min="0" step="1">
+            </div>
+
+            <div class="summary-row summary-total"><span>Payable:</span> <span id="modal-payable">₹0.00</span></div>
+
+            <div class="form-group">
+                <label>Payment Mode</label>
+                <select id="modal-payment-mode">
+                    <option value="Cash">Cash</option>
+                    <option value="UPI">UPI / Card</option>
+                    <option value="Split">Split Payment</option>
+                </select>
+            </div>
+
+            <div id="split-payment-fields" style="display: none; background: #f9fafb; padding: 10px; border-radius: 6px; margin-bottom: 15px;">
+                <div class="form-group">
+                    <label>Cash Received (₹)</label>
+                    <input type="number" id="split-cash" value="0" min="0">
+                </div>
+                <div class="form-group">
+                    <label>UPI Received (₹)</label>
+                    <input type="number" id="split-upi" readonly style="background:#e5e7eb;">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-danger" style="flex: 1;" onclick="document.getElementById('checkout-modal').style.display='none'">Cancel</button>
+                <button class="btn btn-primary" style="flex: 1.5; padding: 0.8rem;" id="generate-only-btn">Save Bill</button>
+                <button class="btn btn-success" style="flex: 1.5; padding: 0.8rem;" id="generate-print-btn">Save & Print</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="receipt-print-area">
+        <div class="receipt-header">
+            <h2>ISHWARIYA FLOUR MILL</h2>
+            <p>kallakurichi Tamil Nadu 606202</p>
+            <p>7639241356</p>
+            <p>https://asalfreshfoods.in/</p>
+        </div>
+        <div class="receipt-divider"></div>
+        <div class="receipt-title">Bill</div>
+        <div class="receipt-divider"></div>
+        
+        <div class="receipt-meta">
+            <div class="meta-row"><span>Invoice#</span> <span id="receipt-id"></span></div>
+            <div class="meta-row"><span>Date</span> <span id="receipt-date"></span></div>
+        </div>
+        <div class="receipt-divider"></div>
+
+        <table class="receipt-table">
+            <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th width="40%">Item</th>
+                    <th width="20%">Qty</th>
+                    <th width="15%">Rate</th>
+                    <th width="20%" style="text-align: right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody id="receipt-items"></tbody>
+        </table>
+        
+        <div class="receipt-divider"></div>
+        
+        <div class="receipt-summary-block">
+            <div class="summary-line"><span>Sub Total</span><span id="receipt-subtotal"></span></div>
+            <div class="summary-line"><span>Discount</span><span id="receipt-discount"></span></div>
+            <div class="receipt-divider" style="margin-left: 40%;"></div>
+            <div class="summary-line total-line"><span>TOTAL</span><span id="receipt-final"></span></div>
+            <div class="summary-line"><span>Payment Info</span><span id="receipt-payment-mode"></span></div>
+        </div>
+        
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-footer">
+            <p class="greeting">Thanks for your business.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

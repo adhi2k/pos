@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - POS System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>🛒 Fresh POS</h1>
+        <ul>
+            <li><a href="index.html">Billing</a></li>
+            <li><a href="products.html" class="active">Inventory</a></li>
+            <li><a href="report.html">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" style="max-width: 1200px;">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+            
+            <div>
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                    <h2 id="form-title">Add New Item</h2>
+                    <br>
+                    <form id="add-product-form">
+                        <div class="form-group">
+                            <label>Item Type</label>
+                            <select id="p-type">
+                                <option value="Product">Product</option>
+                                <option value="Service">Service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <input type="text" id="p-category" required placeholder="e.g. Food, Batter, Services">
+                        </div>
+                        <div class="form-group">
+                            <label>Item Name</label>
+                            <input type="text" id="p-name" required placeholder="e.g. Idly Batter">
+                        </div>
+                        <div class="form-group">
+                            <label>Price (₹)</label>
+                            <input type="number" id="p-price" required step="0.01">
+                        </div>
+                        
+                        <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px;">
+                            <input type="checkbox" id="p-track-stock" checked style="width: 20px; height: 20px;">
+                            <label style="margin: 0;">Track Stock?</label>
+                        </div>
+
+                        <div class="form-group" id="stock-container">
+                            <label>Stock Available</label>
+                            <input type="number" id="p-stock" step="0.01" value="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <select id="p-unit">
+                                <option value="kg">Kilogram (kg)</option>
+                                <option value="pkt">Packet (pkt)</option>
+                                <option value="ltr">Liter (ltr)</option>
+                                <option value="g">Grams (g)</option>
+                                <option value="pcs">Pieces (pcs)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Item Image (Optional)</label>
+                            <input type="file" id="p-image" accept="image/*">
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Save Item</button>
+                    </form>
+                </div>
+
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <h2>⚙️ Invoice Settings</h2>
+                    <br>
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label>Invoice Prefix</label>
+                            <input type="text" id="set-prefix" required placeholder="e.g. INV-">
+                        </div>
+                        <div class="form-group">
+                            <label>Next Bill Number</label>
+                            <input type="number" id="set-next-num" required min="1">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; background-color: #4b5563;">Save Settings</button>
+                    </form>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow-x: auto; height: fit-content;">
+                <h2>Current Inventory</h2>
+                <table style="margin-top: 1rem; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-tbody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('p-track-stock').addEventListener('change', function() {
+            document.getElementById('stock-container').style.display = this.checked ? 'block' : 'none';
+            if(!this.checked) document.getElementById('p-stock').value = 0;
+        });
+        document.getElementById('p-type').addEventListener('change', function() {
+            const trackStock = document.getElementById('p-track-stock');
+            if(this.value === 'Service') {
+                trackStock.checked = false;
+                trackStock.dispatchEvent(new Event('change'));
+            } else {
+                trackStock.checked = true;
+                trackStock.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
