@@ -167,14 +167,27 @@ function addToCart(product) {
     renderCart();
 }
 
-function updateCartQty(id, change) {
+// --- NEW: Handle typing custom decimal values in the cart ---
+function setCartQty(id, value) {
     const item = cart.find(i => i.id === id);
     if (!item) return;
+    
     const product = getProducts().find(p => p.id === id);
-    const newQty = item.qty + change;
-    if (newQty <= 0) cart = cart.filter(i => i.id !== id);
-    else if (product.trackStock !== false && newQty > product.stock) alert('Cannot exceed available stock!');
-    else item.qty = newQty;
+    let newQty = parseFloat(value);
+
+    // If they type 0 or a negative number, remove the item
+    if (isNaN(newQty) || newQty <= 0) {
+        cart = cart.filter(i => i.id !== id);
+    } 
+    // Check if there is enough stock
+    else if (product.trackStock !== false && newQty > product.stock) {
+        alert('Cannot exceed available stock!');
+    } 
+    // Apply the exact decimal quantity
+    else {
+        item.qty = newQty;
+    }
+    
     renderCart();
 }
 
@@ -187,8 +200,18 @@ function renderCart() {
         const subtotal = item.qty * item.price; total += subtotal;
         const div = document.createElement('div'); div.className = 'cart-item';
         div.innerHTML = `
-            <div class="cart-item-details"><h4>${item.name}</h4><small>${formatMoney(item.price)} x ${item.qty}</small></div>
-            <div class="cart-item-controls"><button onclick="updateCartQty('${item.id}', -1)">-</button><span>${item.qty}</span><button onclick="updateCartQty('${item.id}', 1)">+</button><strong style="margin-left:10px">${formatMoney(subtotal)}</strong></div>
+            <div class="cart-item-details">
+                <h4>${item.name}</h4><small>${formatMoney(item.price)} / ${item.unit || 'Nos'}</small>
+            </div>
+            <div class="cart-item-controls">
+                <button onclick="updateCartQty('${item.id}', -1)">-</button>
+                <input type="number" step="0.01" value="${item.qty}" 
+                       onchange="setCartQty('${item.id}', this.value)" 
+                       onclick="this.select()" 
+                       style="width: 60px; text-align: center; border: 1px solid #d1d5db; border-radius: 4px; padding: 4px; margin: 0 5px; font-size: 1rem;">
+                <button onclick="updateCartQty('${item.id}', 1)">+</button>
+                <strong style="margin-left:10px; min-width: 70px; text-align: right;">${formatMoney(subtotal)}</strong>
+            </div>
         `;
         cartContainer.appendChild(div);
     });
