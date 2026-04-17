@@ -317,3 +317,77 @@ th { background: #f9fafb; font-weight: 600; }
     .terms { text-align: left; margin-bottom: 15px; line-height: 1.4;}
     .greeting { text-align: center; font-size: 13pt; margin-bottom: 10px;}
 }
+
+/* ==========================================
+   📱 MOBILE RESPONSIVE LAYOUT
+========================================== */
+/* Inventory Grid Layout */
+.inventory-layout {
+    display: grid; 
+    grid-template-columns: 1fr 2fr; 
+    gap: 2rem;
+}
+
+@media (max-width: 900px) {
+    /* Stack Navigation */
+    nav {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    nav ul {
+        width: 100%;
+        justify-content: space-around;
+        padding: 0;
+    }
+    
+    /* Global Container */
+    .container {
+        padding: 1rem;
+    }
+
+    /* POS Dashboard */
+    .pos-layout { 
+        grid-template-columns: 1fr; 
+        height: auto; 
+    }
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Smaller cards for mobile */
+        gap: 1rem;
+    }
+
+    /* Inventory Layout */
+    .inventory-layout { 
+        grid-template-columns: 1fr; 
+    }
+
+    /* Stats Grid */
+    .stats-grid { 
+        grid-template-columns: 1fr; 
+    }
+
+    /* Tables horizontal scrolling */
+    table {
+        font-size: 0.9rem;
+    }
+    th, td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    /* Checkout Modal */
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    .modal-content .btn {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Make Cart Touch-Friendly */
+    .cart-item-controls button {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+}
